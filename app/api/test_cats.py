@@ -1,6 +1,6 @@
 from starlette.testclient import TestClient
 
-from app.api.cats import WRONG_CAT_NAME
+from app.core.const import WRONG_CAT_NAME
 from app.main import app
 
 client = TestClient(app)
@@ -28,12 +28,11 @@ def test_create_cat_error_name():
     print(data)
 
 
-def test_example_error():
-    path_param = 'result'
-    query_param, query_value = 'num', 11
+def test_get_cats():
+    """Тест список котов."""
+    response = client.get(f'/cats')
 
-    response = client.get(f'/example/{path_param}?{query_param}={query_value}')
-
-    assert response.status_code == 422
+    assert response.status_code == 200
     data = response.json()
     print(data)
+

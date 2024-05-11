@@ -5,5 +5,5 @@ WRONG_CAT_NAME = 'Vova'
 
 class Tag(Enum):
     COMMON = 'Common endpoint'
-    CAT_CRUD = 'Only cats CRUD'
+    CAT_CRUD = 'Only crud CRUD'
 

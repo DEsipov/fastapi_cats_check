@@ -1,37 +1,37 @@
 # ##########CATs###############
-from typing import Optional, Any
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from fastapi import APIRouter
-from pydantic import BaseModel, Field, validator
-
-from app.core.const import WRONG_CAT_NAME, Tag
+from app.core.const import Tag
+from app.core.db import get_async_session
+from app.crud.cats import create_cat, get_cats_db
+from app.schemas.cats import CatCreate
 
 router = APIRouter()
 
 
-class Cat(BaseModel):
-    """Собственно кот."""
-    name: str = Field(max_length=20, title='Имя', description='Кота имя')
-    age: Optional[int]
-    is_grey: bool = True
-
-    class Config:
-        title = 'Класс Кота'
-
-    @validator('name')
-    def validate_name(cls, value: str):
-        if value.lower() == WRONG_CAT_NAME.lower():
-            raise ValueError(f'{WRONG_CAT_NAME} не кот!')
-        return value
-
-
 @router.post(
-    '/cats',
+    '/cats/',
     tags=[Tag.CAT_CRUD],
     summary='Создание кота',
     response_description='Возрат кота',
     status_code=201,
 )
-def cats(cat: Cat) -> dict[str, Any]:
+async def cats(
+        cat: CatCreate,
+        session: AsyncSession = Depends(get_async_session)
+):
     """Сумма."""
-    return dict(cat)
+    new_cat = await create_cat(cat, session)
+    return new_cat
+
+
+@router.get(
+    '/cats/',
+    response_model=list[CatCreate],
+)
+async def get_cats(
+        session: AsyncSession = Depends(get_async_session),
+):
+    all_rooms = await get_cats_db(session)
+    return all_rooms
