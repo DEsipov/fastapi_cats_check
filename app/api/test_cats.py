@@ -1,6 +1,6 @@
 from starlette.testclient import TestClient
 
-from app.cats import WRONG_CAT_NAME
+from app.api.cats import WRONG_CAT_NAME
 from app.main import app
 
 client = TestClient(app)
@@ -37,5 +37,3 @@ def test_example_error():
     assert response.status_code == 422
     data = response.json()
     print(data)
-
-

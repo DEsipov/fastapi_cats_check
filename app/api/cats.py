@@ -4,7 +4,7 @@ from typing import Optional, Any
 from fastapi import APIRouter
 from pydantic import BaseModel, Field, validator
 
-from app.core import Tag, WRONG_CAT_NAME
+from app.core.const import WRONG_CAT_NAME, Tag
 
 router = APIRouter()
 

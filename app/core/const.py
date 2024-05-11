@@ -7,4 +7,3 @@ class Tag(Enum):
     COMMON = 'Common endpoint'
     CAT_CRUD = 'Only cats CRUD'
 
-

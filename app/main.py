@@ -1,26 +1,10 @@
-from enum import Enum
-from typing import Optional
+from fastapi import FastAPI
 
-from fastapi import FastAPI, Query, Path
-
-from app.cats import router
-from app.core import Tag
-
-app = FastAPI()
-app.include_router(router)
+from app.api.cats import router as cat_router
+from app.api.other_views import router as other_router
+from app.core.config import settings
 
 
-
-
-@app.get(
-    '/example/{name}',
-    tags=[Tag.COMMON],
-    summary='Сложение',
-    response_description='Возвращает сумму',
-)
-async def example(*,
-                  name: str = Path(min_length=2, max_length=20),
-                  num: Optional[int] = Query(title='Число', ge=1, le=10, alias='num')
-                  ):
-    """Сумма."""
-    return [name, num]
+app = FastAPI(title=settings.app_title)
+app.include_router(cat_router)
+app.include_router(other_router)
