@@ -33,5 +33,6 @@ async def cats(
 async def get_cats(
         session: AsyncSession = Depends(get_async_session),
 ):
-    all_rooms = await get_cats_db(session)
-    return all_rooms
+    """Список котов и кошек."""
+    all_cats = await get_cats_db(session)
+    return all_cats
